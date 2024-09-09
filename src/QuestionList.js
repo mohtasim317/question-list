@@ -7,7 +7,7 @@ const SUBMISSIONS_API_BASE_URL =
   "https://api.frontendexpert.io/api/fe/submissions";
 
 export default function QuestionList() {
-  const [categories, setCategories] = useState({});
+  const [categories, setCategories] = useState([]);
   const [questionListData, setQuestionListData] = useState([]);
 
   // const fetchCategories = async () => {
@@ -17,11 +17,11 @@ export default function QuestionList() {
   // };
 
   const createCategories = (questionData) => {
-    let allCategories = {};
+    let allCategories = [];
     for (let question of questionData) {
       let currentCategory = question.category;
-      if (!allCategories[currentCategory]) {
-        allCategories[currentCategory] = true;
+      if (!allCategories.includes(currentCategory)) {
+        allCategories.push(currentCategory);
       }
     }
     setCategories(allCategories);
@@ -30,30 +30,36 @@ export default function QuestionList() {
   useEffect(() => {
     setQuestionListData(questionData);
     createCategories(questionData);
-    console.log(categories);
-    console.log(questionListData);
-    console.log(submissionData);
   }, []);
 
   return (
     <>
-      {/* {questionListData.map(({ id, name, category }) => {
+      {categories.map((category) => {
         return (
-          <div className="question">
-            <div>{name}</div>
-            <div>{category}</div>
+          <div className="category">
+            <h2>{category}</h2>
+            {questionListData
+              .filter((ele) => {
+                return ele.category === category;
+              })
+              .map(({ name, id, category }) => {
+                let findStatus =
+                  submissionData
+                    .find((ele) => {
+                      return ele.questionId === id;
+                    })
+                    ?.status.toLowerCase() || "unattempted";
+
+                return (
+                  <div className="question">
+                    <div className={`status + ${findStatus}`}></div>
+                    <div>{name}</div>
+                  </div>
+                );
+              })}
           </div>
         );
-      })} */}
-      {Object.keys(categories).map((category) => {
-        return <div>{category}</div>;
       })}
     </>
   );
 }
-
-/*
-{
-
-}
-*/
