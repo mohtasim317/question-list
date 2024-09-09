@@ -1,70 +1,19 @@
-# Getting Started with Create React App
+You're given a CSS file for the FrontendExpert question list, and you need to implement the component using React.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+When the component initially mounts, it should make two API requests:
 
-## Available Scripts
+https://api.frontendexpert.io/api/fe/questions returns a list of all of the questions as JSON in this format:
 
-In the project directory, you can run:
+https://api.frontendexpert.io/api/fe/submissions returns a list of the user's most recent submissions as JSON in this format:
 
-### `npm start`
+The component should render a fragment containing all of the categories. Each category is a div with a heading and one or more question divs. Each category div should have a category CSS class, and each question should have a question CSS class.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The category heading is an h2 with the text of the name of the category and how many correct submissions there are for questions in that category (correct questions have the "CORRECT" status). For example, if 1 out of 5 CSS questions have a "CORRECT" status, the category heading would read CSS 1 / 5.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The question divs should first contain another div for the status. This status div should have the CSS class of status and a CSS class based on the current status. If the question exists in the submissions API output, that status should be converted to lowercase, any \_'s should be replaced with a -, and the resulting string should be used as a CSS class. For example, if a submission status is PARTIALLY_CORRECT, the complete CSS class of the status div would be status partially-correct. If there is no status in the submissions response, the status class should be status unattempted.
 
-### `npm test`
+After the status div, each question should also contain an h3 with the title of the question.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The complete output of a category might look something like this:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Your component has already been rendered to the DOM inside of a #root div directly in the body with the CSS imported.
