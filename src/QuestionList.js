@@ -11,11 +11,11 @@ export default function QuestionList() {
   const [questionListData, setQuestionListData] = useState([]);
   const [submissionData, setSubmissionData] = useState([]);
 
-  const fetchCategories = async () => {
-    const rawData = await fetch(QUESTIONS_API_BASE_URL);
-    const jsonData = await rawData.json();
-    setCategories(jsonData);
-  };
+  // const fetchData = async (url, hook) => {
+  //   const rawData = await fetch(url);
+  //   const jsonData = await rawData.json();
+  //   hook(jsonData);
+  // };
 
   const getStatus = (status) => {
     let result = "status ";
@@ -42,10 +42,40 @@ export default function QuestionList() {
     setCategories(allCategories);
   };
 
+  const calculateCorrect = (category) => {
+    let correct = 0;
+    let total = 0;
+    const allQuestions = questionListData.filter((ele) => {
+      return ele.category === category;
+    });
+
+    allQuestions.forEach((question) => {
+      let currentStatus = submissionData.find((ele) => {
+        return ele.questionId === question.id;
+      });
+
+      if (currentStatus === undefined) {
+        total++;
+      } else {
+        if (currentStatus.status === "CORRECT") {
+          correct++;
+          total++;
+        } else {
+          total++;
+        }
+      }
+    });
+    let result = `${correct} / ${total}`;
+
+    return result;
+  };
+
   useEffect(() => {
     setQuestionListData(questionData);
     setSubmissionData(submittedData);
     createCategories(questionData);
+    // fetchData(QUESTIONS_API_BASE_URL, setQuestionListData);
+    // fetchData(SUBMISSIONS_API_BASE_URL, setSubmissionData);
   }, []);
 
   return (
@@ -53,7 +83,9 @@ export default function QuestionList() {
       {categories.map((category) => {
         return (
           <div className="category">
-            <h2>{category}</h2>
+            <h2>
+              {category} {calculateCorrect(category)}
+            </h2>
             {questionListData
               .filter((ele) => {
                 return ele.category === category;
@@ -65,7 +97,7 @@ export default function QuestionList() {
                 return (
                   <div className="question">
                     <div className={getStatus(currentStatus?.status)}></div>
-                    <div>{name}</div>
+                    <h3>{name}</h3>
                   </div>
                 );
               })}
